@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["segersniels"]
   spec.email         = ["segers.n@hotmail.com"]
 
-  spec.summary       = %q{Send TODO tasks and reminders to yourself on Slack.}
-  spec.description   = %q{SlackDO provides you with an easy CLI tool which allows you to write TODO tasks and reminders to yourself on Slack}
+  spec.summary       = %q{Send todo tasks and reminders to yourself on Slack.}
+  spec.description   = %q{SlackDO provides you with an easy CLI tool which allows you to write todo tasks and reminders to yourself on Slack}
   spec.homepage      = ""
   spec.license       = "MIT"
 
