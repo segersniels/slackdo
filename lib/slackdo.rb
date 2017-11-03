@@ -5,7 +5,7 @@ require 'slack-notifier'
 module Slackdo
   class Webhook
 	def create_directory
-	  system 'mkdir ~/.slackdo'
+	  system 'mkdir ~/.slackdo &> /dev/null'
 	end
 	def configure_webhook
 	  cli = HighLine.new
