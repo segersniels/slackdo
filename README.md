@@ -9,17 +9,17 @@ gem install slackdo
 
 ## Usage
 
-TODO: Write usage instructions here
+First thing you should do is configure your incoming webhook by doing `slackdo webhook`.
+
+After that you're all set to go. Add a new TODO item by typing `slackdo task` or add a reminder with `slackdo reminder`.
 
 ## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
-
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+Slackdo is still under development and might still be buggy. Feel free to add support to the project.
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/slackdo.
+Bug reports and pull requests are welcome on GitHub at https://github.com/segersniels/slackdo.
 
 ## License
 
