@@ -11,9 +11,26 @@ gem install slackdo
 
 In order to use slackdo you still have to add the rubygem's bin location to your $PATH.
 
+eg. for OSX:
+
 ```bash
 export PATH=$PATH:/usr/local/lib/ruby/gems/2.4.0/gems/slackdo-0.2.0/bin
 ```
+
+To get to know your general gem installation path use the following for your general rubygems information and look for the GEM PATHS variable:
+
+```bash
+$ gem env
+```
+
+Or just check the specific gem information to see the location where it's installed:
+
+```bash
+$ gem which slackdo
+/usr/local/lib/ruby/gems/2.4.0/gems/slackdo-0.2.0/lib/slackdo.rb
+```
+
+This indicates that your gem binary is located at `/usr/local/lib/ruby/gems/2.4.0/gems/slackdo-0.2.0/bin`.
 
 ## Usage
 
