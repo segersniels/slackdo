@@ -31,7 +31,7 @@ slackdo reminder
 
 ## Development
 
-Slackdo is still under development and might still be buggy. Feel free to add support to the project.
+Slackdo is still under development and might still be buggy. Feel free to contribute to the project.
 
 ## Contributing
 
