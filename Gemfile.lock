@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    slackdo (0.2.0)
+    slackdo (0.2.1)
       highline
       slack-notifier
 
