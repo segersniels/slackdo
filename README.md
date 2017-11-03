@@ -1,10 +1,16 @@
 # Slackdo
 ![example](img/task-example.png)
 
-SlackDO is a simple CLI tool that allows you to send TODO items and Reminders to yourself on Slack through an incoming webhook.
+A lot of people use the slack conversation with themselves as a todo list. SlackDO is a simple CLI tool that allows you to send TODO items and Reminders to yourself on Slack through an incoming webhook.
+
+It simplifies the process of maintaining your TODO list from the CLI without having to leave the CLI while working.
+
+## Prerequisites
+- Ruby
+- [Slack Incoming Webhook](https://my.slack.com/services/new/incoming-webhook)
+  - Configure the webhook to your liking and either point the webhook to yourself or a seperate todo channel
 
 ## Installation
-
 ```
 gem install slackdo
 ```
