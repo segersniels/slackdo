@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = %q{Send todo tasks and reminders to yourself on Slack.}
   spec.description   = %q{SlackDO provides you with an easy CLI tool which allows you to write todo tasks and reminders to yourself on Slack}
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/segersniels/slackdo"
   spec.license       = "MIT"
 
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
