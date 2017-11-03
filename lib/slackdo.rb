@@ -41,7 +41,7 @@ module Slackdo
       notifier = Slack::Notifier.new `cat ~/.slackdo/webhook`.strip
       cli = HighLine.new
       message = cli.ask 'Type your reminder:'
-      notifier.post text: "◊ [REMINDER] #{message}"
+      notifier.post text: "• _#{message}_"
 	end
   end
 end
