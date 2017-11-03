@@ -16,7 +16,7 @@ module Slackdo
   class Task
 	def add_task
 	  webhook = `cat ~/.slackdo/webhook`
-      notifier = Slack::Notifier.new "#{webhook}"
+      notifier = Slack::Notifier.new webhook
       cli = HighLine.new
 	  category = cli.ask 'What is the category of this new task? eg. DEV or GENERAL'
       message = cli.ask 'Type your new task:'
