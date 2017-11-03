@@ -2,7 +2,12 @@
 
 require 'slackdo'
 
+webhook = Slackdo::Webhook.new
+webhook.create_directory
+
 case ARGV[0]
+	when 'webhook'
+	  webhook.configure_webhook
 	when 'task'
 	  slack = Slackdo::Task.new
       slack.add_task

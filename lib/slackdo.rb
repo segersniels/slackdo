@@ -3,9 +3,20 @@ require 'highline'
 require 'slack-notifier'
 
 module Slackdo
+  class Webhook
+	def create_directory
+	  system 'mkdir ~/.slackdo'
+	end
+	def configure_webhook
+	  cli = HighLine.new
+	  webhook = cli.ask 'Configure your webhook:'
+	  system "echo #{webhook} > ~/.slackdo/webhook"
+    end
+  end
   class Task
 	def add_task
-	  webhook = 'https://hooks.slack.com/services/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'
+      notifier = Slack::Notifier.new "#{webhook}"
+	  webhook = `cat ~/.slackdo/webhook`
       cli = HighLine.new
 	  category = cli.ask 'What is the category of this new task? eg. DEV or GENERAL'
       message = cli.ask 'Type your new task:'
@@ -28,7 +39,8 @@ module Slackdo
 
   class Reminder
 	def add_reminder
-      webhook = 'https://hooks.slack.com/services/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'
+	  notifier = Slack::Notifier.new "#{webhook}"
+	  webhook = `cat ~/.slackdo/webhook`
       cli = HighLine.new
       message = cli.ask 'Type your reminder:'
       notifier.post text: "• [REMINDER] #{message}"

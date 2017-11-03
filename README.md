@@ -1,24 +1,11 @@
 # Slackdo
-
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/slackdo`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+SlackDO is a simple CLI tool that allows you to send TODO items and Reminders to yourself on Slack through an incoming webhook.
 
 ## Installation
 
-Add this line to your application's Gemfile:
-
 ```ruby
-gem 'slackdo'
+gem install slackdo
 ```
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install slackdo
 
 ## Usage
 
