@@ -33,6 +33,7 @@ module Slackdo
           mrkdwn_in: ["text"]
       }
       notifier.post text: "• [#{category}] #{message}", attachments: [note]
+	  puts 'Item was posted to Slack...'
 	end
   end
 
@@ -42,6 +43,7 @@ module Slackdo
       cli = HighLine.new
       message = cli.ask 'Type your reminder:'
       notifier.post text: "• _#{message}_"
+	  puts 'Reminder was posted to Slack...'
 	end
   end
 end
