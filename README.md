@@ -8,7 +8,7 @@ It simplifies the process of maintaining your TODO list from the CLI without hav
 ## Prerequisites
 - Ruby
 - [Slack Incoming Webhook](https://my.slack.com/services/new/incoming-webhook)
-  - Configure the webhook to your liking and either point the webhook to yourself or a seperate todo channel
+  - Configure the webhook to your liking and either point the webhook to yourself or a separate todo channel
 
 ## Installation
 ```
