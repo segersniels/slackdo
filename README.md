@@ -5,8 +5,14 @@ SlackDO is a simple CLI tool that allows you to send TODO items and Reminders to
 
 ## Installation
 
-```ruby
+```
 gem install slackdo
+```
+
+In order to use slackdo you still have to add the rubygem's bin location to your $PATH.
+
+```bash
+export PATH=$PATH:/usr/local/lib/ruby/gems/2.4.0/gems/slackdo-0.2.0/bin
 ```
 
 ## Usage
