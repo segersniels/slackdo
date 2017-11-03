@@ -15,8 +15,8 @@ module Slackdo
   end
   class Task
 	def add_task
-      notifier = Slack::Notifier.new "#{webhook}"
 	  webhook = `cat ~/.slackdo/webhook`
+      notifier = Slack::Notifier.new "#{webhook}"
       cli = HighLine.new
 	  category = cli.ask 'What is the category of this new task? eg. DEV or GENERAL'
       message = cli.ask 'Type your new task:'
@@ -39,8 +39,8 @@ module Slackdo
 
   class Reminder
 	def add_reminder
-	  notifier = Slack::Notifier.new "#{webhook}"
 	  webhook = `cat ~/.slackdo/webhook`
+      notifier = Slack::Notifier.new "#{webhook}"
       cli = HighLine.new
       message = cli.ask 'Type your reminder:'
       notifier.post text: "• [REMINDER] #{message}"
