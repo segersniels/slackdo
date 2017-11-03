@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+
+require 'slackdo'
+
+case ARGV[0]
+	when 'task'
+	  slack = Slackdo::Task.new
+      slack.add_task
+	when 'reminder'
+	  slack = Slackdo::Reminder.new
+	  slack.add_reminder
+end
