@@ -1,8 +1,12 @@
 require "slackdo/version"
+require 'highline'
+require 'slack-notifier'
 
 module Slackdo
   class Task
 	def add_task
+	  webhook = 'https://hooks.slack.com/services/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'
+      cli = HighLine.new
 	  category = cli.ask 'What is the category of this new task? eg. DEV or GENERAL'
       message = cli.ask 'Type your new task:'
       want_note = cli.ask 'Do you want to add a note to this new task? y/n'
@@ -24,7 +28,10 @@ module Slackdo
 
   class Reminder
 	def add_reminder
+      webhook = 'https://hooks.slack.com/services/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'
+      cli = HighLine.new
       message = cli.ask 'Type your reminder:'
       notifier.post text: "• [REMINDER] #{message}"
 	end
+  end
 end
