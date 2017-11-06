@@ -65,7 +65,7 @@ To start using the Trello integration of SlackDO, which enables you to push your
 slackdo configure trello
 ```
 
-Now that this has been configured SlackDO will send your items to Trello as well using the same command.
+Now that this has been configured SlackDO will send your items to Trello everytime you use the command:
 
 ```
 slackdo task
