@@ -2,15 +2,24 @@
 
 require 'slackdo'
 
-webhook = Slackdo::Webhook.new
-webhook.create_directory
+config = Slackdo::Config.new
+config.configure_init
 
 case ARGV[0]
-	when 'webhook'
-	  webhook.configure_webhook
+	when 'configure'
+	  config.configure_slack_webhook if ARGV[1] == 'slack'
+	  config.configure_trello_api if ARGV[1] == 'trello'
 	when 'task'
 	  slack = Slackdo::Task.new
       slack.add_task
+	  file = File.read("#{ENV['HOME']}/.slackdo/config.json")
+      hash = JSON.parse(file)
+	  if hash['allow_trello_pushing'] == 'true'
+		card_name = slack.get_message
+		card_desc = slack.get_notes
+		trello = Slackdo::Card.new
+	    trello.add_card(card_name, card_desc)
+	  end
 	when 'reminder'
 	  slack = Slackdo::Reminder.new
 	  slack.add_reminder

@@ -39,11 +39,11 @@ $ gem which slackdo
 This indicates that your gem binary is located at `/usr/local/lib/ruby/gems/<ruby-version>/gems/slackdo-<gem-version>/bin`.
 
 ## Usage
-
+### Slack
 First thing you should do is configure your incoming webhook by doing the following:
 
 ```
-slackdo webhook
+slackdo configure slack
 ```
 
 After that you're all set to go.
@@ -57,6 +57,23 @@ or add a reminder with
 ```ruby
 slackdo reminder
 ```
+
+### Trello
+To start using the Trello integration of SlackDO, which enables you to push your TODO items to a list on Trello use:
+
+```
+slackdo configure trello
+```
+
+Now that this has been configured SlackDO will send your items to Trello as well using the same command.
+
+```
+slackdo task
+```
+
+![example](img/cli-example.png)
+![example](img/slack-task.png)
+![example](img/trello-card.png)
 
 ## Development
 

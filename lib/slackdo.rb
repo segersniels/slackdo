@@ -1,45 +1,129 @@
-require "slackdo/version"
+require 'slackdo/version'
 require 'highline'
 require 'slack-notifier'
+require 'trello'
+require 'json'
 
 module Slackdo
-  class Webhook
-	def create_directory
-	  system 'mkdir ~/.slackdo &> /dev/null'
-	end
-	def configure_webhook
+  class Config
+	def configure_init
+      system "mkdir #{ENV['HOME']}/.slackdo &> /dev/null"
+	  unless File.exist?("#{ENV['HOME']}/.slackdo/config.json")
+		system "touch #{ENV['HOME']}/.slackdo/config.json"
+		hash = {
+			"slack_webhook" => "",
+			"allow_trello_pushing" => "false",
+			"trello_public_key" => "",
+			"trello_member_token" => "",
+			"trello_list_id" => ""
+		}
+		File.open("#{ENV['HOME']}/.slackdo/config.json",'w') do |f|
+		  f.write(hash.to_json)
+		end
+	  end
+    end
+	def configure_trello_api
 	  cli = HighLine.new
-	  webhook = cli.ask 'Configure your webhook:'
-	  system "echo #{webhook} > ~/.slackdo/webhook"
+	  file = File.read("#{ENV['HOME']}/.slackdo/config.json")
+      hash = JSON.parse(file)
+	  public_key = cli.ask 'What is your Trello public key?'.strip
+	  member_token = cli.ask 'What is your Trello member token?'.strip
+	  list_id = cli.ask 'What is your board list ID where the cards should be created?'.strip
+	  hash["trello_public_key"] = public_key
+	  hash["trello_member_token"] = member_token
+	  hash["allow_trello_pushing"] = "true"
+	  hash["trello_list_id"] = list_id
+	  File.open("#{ENV['HOME']}/.slackdo/config.json",'w') do |f|
+        f.write(hash.to_json)
+      end
+	  puts 'Trello API was configured...'
+	end
+	def configure_slack_webhook
+      cli = HighLine.new
+	  file = File.read("#{ENV['HOME']}/.slackdo/config.json")
+      hash = JSON.parse(file)
+	  webhook = cli.ask 'What is your Slack webhook?'.strip
+      hash["slack_webhook"] = webhook
+	  File.open("#{ENV['HOME']}/.slackdo/config.json",'w') do |f|
+        f.write(hash.to_json)
+      end
+	  puts 'Slack API was configured...'
     end
   end
+
+  class Card
+	def configure_trello
+	  file = File.read("#{ENV['HOME']}/.slackdo/config.json")
+      hash = JSON.parse(file)
+	  Trello.configure do |config|
+        config.developer_public_key = hash['trello_public_key']
+        config.member_token = hash['trello_member_token']
+      end
+	end
+	def add_card(card_name, card_desc)
+	  file = File.read("#{ENV['HOME']}/.slackdo/config.json")
+      hash = JSON.parse(file)
+	  configure_trello
+	  card = Trello::Card.create(
+        name: card_name,
+        desc: card_desc,
+		list_id: hash['trello_list_id'],
+        pos: 'top',
+      )
+	  card.save
+	  puts 'Card was created on Trello...'
+	end
+  end
+
   class Task
+	$note_content = ''
+	$message = ''
+	def set_message(text)
+		$message = text
+	end
+	def set_notes(notes)
+		$note_content = notes
+	end
+	def get_message
+	  return $message
+	end
+	def get_notes
+	  return $note_content
+	end
 	def add_task
-      notifier = Slack::Notifier.new `cat ~/.slackdo/webhook`.strip
+	  file = File.read("#{ENV['HOME']}/.slackdo/config.json")
+      hash = JSON.parse(file)
+	  webhook = hash['slack_webhook']
+      notifier = Slack::Notifier.new webhook
       cli = HighLine.new
 	  category = cli.ask 'What is the category of this new task? eg. DEV or GENERAL'
-      message = cli.ask 'Type your new task:'
+      cli_message = cli.ask 'Type your new task:'
       want_note = cli.ask 'Do you want to add a note to this new task? y/n'
-      note_content = ''
+      cli_note = ''
       while want_note == 'y'
         note_text = cli.ask 'Type your note:'
-        note_content << "\n`- #{note_text}`"
+        cli_note << "\n`- #{note_text}`"
         want_note = cli.ask 'Do you want to add another note to the task? y/n'
       end
       note = {
           fallback: "This should've been a new note but looks like something went wrong...",
-          text: note_content,
+          text: cli_note,
           color: "gray",
           mrkdwn_in: ["text"]
       }
-      notifier.post text: "• [#{category}] #{message}", attachments: [note]
+	  set_message("[#{category}] #{cli_message}")
+	  set_notes(cli_note)
+      notifier.post text: "• [#{category}] #{cli_message}", attachments: [note]
 	  puts 'Item was posted to Slack...'
 	end
   end
 
   class Reminder
 	def add_reminder
-      notifier = Slack::Notifier.new `cat ~/.slackdo/webhook`.strip
+	  file = File.read("#{ENV['HOME']}/.slackdo/config.json")
+      hash = JSON.parse(file)
+      webhook = hash['slack_webhook']
+      notifier = Slack::Notifier.new webhook
       cli = HighLine.new
       message = cli.ask 'Type your reminder:'
       notifier.post text: "• _#{message}_"
