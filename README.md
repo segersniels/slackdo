@@ -1,9 +1,7 @@
 # Slackdo
 ![example](img/task-example.png)
 
-A lot of people use the slack conversation with themselves as a todo list. SlackDO is a simple CLI tool that allows you to send TODO items and Reminders to yourself on Slack through an incoming webhook.
-
-It simplifies the process of maintaining your TODO list from the CLI without having to leave the CLI while working.
+SlackDO is a simple CLI tool that allows you to send TODO items and reminders to a channel on Slack or to yourself. It simplifies the process of maintaining your TODO list from the CLI without having to leave it.
 
 ## Prerequisites
 - Ruby
@@ -17,26 +15,9 @@ gem install slackdo
 
 In order to use slackdo you still have to add the rubygem's bin location to your $PATH.
 
-eg. for OSX:
-
 ```bash
-export PATH=$PATH:/usr/local/lib/ruby/gems/<ruby-version>/gems/slackdo-<gem-version>/bin
+export PATH=$PATH:$(gem which slackdo | cut -d'/' -f-9 )/bin
 ```
-
-To get to know your general gem installation path use the following for your general rubygems information and look for the GEM PATHS variable:
-
-```bash
-$ gem env
-```
-
-Or just check the specific gem information to see the location where it's installed:
-
-```bash
-$ gem which slackdo
-/usr/local/lib/ruby/gems/<ruby-version>/gems/slackdo-<gem-version>/lib/slackdo.rb
-```
-
-This indicates that your gem binary is located at `/usr/local/lib/ruby/gems/<ruby-version>/gems/slackdo-<gem-version>/bin`.
 
 ## Usage
 ### Slack
@@ -59,13 +40,13 @@ slackdo reminder
 ```
 
 ### Trello
-To start using the Trello integration of SlackDO, which enables you to push your TODO items to a list on Trello use:
+To start using the Trello integration of SlackDO, which enables you to push your TODO items to a list on Trello, use:
 
 ```
 slackdo configure trello
 ```
 
-Now that this has been configured SlackDO will send your items to Trello everytime you use the command:
+Now that this has been configured SlackDO will send your items to both Slack and Trello everytime you use the command:
 
 ```
 slackdo task
@@ -74,14 +55,14 @@ slackdo task
 ![example](img/slack-task.png)
 ![example](img/trello-card.png)
 
-## Development
+### Configuration
+The config file is located at `~/.slackdo/config.json` if you like to change things manually.
 
+## Development
 Slackdo is still under development and might still be buggy. Feel free to contribute to the project.
 
 ## Contributing
-
 Bug reports and pull requests are welcome on GitHub at https://github.com/segersniels/slackdo.
 
 ## License
-
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
