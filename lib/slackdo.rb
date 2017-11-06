@@ -7,47 +7,50 @@ require 'json'
 module Slackdo
   class Config
 	def configure_init
-      system 'mkdir ~/.slackdo &> /dev/null'
-	  system 'touch ~/.slackdo/config.json &> /dev/null'
-	  hash = {
+      system "mkdir #{ENV['HOME']}/.slackdo &> /dev/null"
+	  unless File.exist?("#{ENV['HOME']}/.slackdo/config.json")
+		system "touch #{ENV['HOME']}/.slackdo/config.json"
+		hash = {
 			"slack_webhook" => "",
 			"allow_trello_pushing" => "false",
 			"trello_public_key" => "",
 			"trello_member_token" => ""
-	  }
-	  File.open("~/.slackdo/config.json","w") do |f|
-		f.write(hash.to_json)
+		}
+		File.open("#{ENV['HOME']}/.slackdo/config.json",'w') do |f|
+		  f.write(hash.to_json)
+		end
 	  end
     end
 	def configure_trello_api
 	  cli = HighLine.new
-	  file = File.read('~/.slackdo/config.json')
-	  hash = JSON.parse(file)
+	  file = File.read("#{ENV['HOME']}/.slackdo/config.json")
+      hash = JSON.parse(file)
 	  public_key = cli.ask 'What is your Trello public key?'.strip
 	  member_token = cli.ask 'What is your Trello member token?'.strip
 	  hash["trello_public_key"] = public_key
 	  hash["trello_member_token"] = member_token
 	  hash["allow_trello_pushing"] = "true"
-	  File.open("~/.slackdo/config.json","w") do |f|
+	  File.open("#{ENV['HOME']}/.slackdo/config.json",'w') do |f|
         f.write(hash.to_json)
       end
 	  puts 'Trello API was configured...'
 	end
 	def configure_slack_webhook
       cli = HighLine.new
-	  file = File.read('~/.slackdo/config.json')
+	  file = File.read("#{ENV['HOME']}/.slackdo/config.json")
       hash = JSON.parse(file)
 	  webhook = cli.ask 'What is your Slack webhook?'.strip
       hash["slack_webhook"] = webhook
-      File.open("~/.slackdo/config.json","w") do |f|
+	  File.open("#{ENV['HOME']}/.slackdo/config.json",'w') do |f|
         f.write(hash.to_json)
       end
 	  puts 'Slack API was configured...'
     end
   end
+
   class Trello
 	def configure_trello
-	  file = File.read('~/.slackdo/config.json')
+	  file = File.read("#{ENV['HOME']}/.slackdo/config.json")
       hash = JSON.parse(file)
 	  Trello.configure do |config|
         config.developer_public_key = hash['trello_public_key']
@@ -55,7 +58,7 @@ module Slackdo
       end
 	end
 	def add_card(card_name, desc)
-	  file = File.read('~/.slackdo/config.json')
+	  file = File.read("#{ENV['HOME']}/.slackdo/config.json")
       hash = JSON.parse(file)
 	  configure_trello
 	  Trello::Card.create(
@@ -66,6 +69,7 @@ module Slackdo
       )
 	end
   end
+
   class Task
 	note_content = ''
 	message = ''
@@ -82,7 +86,7 @@ module Slackdo
 	  return note_content
 	end
 	def add_task
-	  file = File.read('~/.slackdo/config.json')
+	  file = File.read("#{ENV['HOME']}/.slackdo/config.json")
       hash = JSON.parse(file)
 	  webhook = hash['slack_webhook']
       notifier = Slack::Notifier.new webhook
@@ -104,14 +108,17 @@ module Slackdo
       }
 	  set_message(cli_message)
 	  set_notes(cli_note)
-      notifier.post text: "• [#{category}] #{message}", attachments: [note]
+      notifier.post text: "• [#{category}] #{cli_message}", attachments: [note]
 	  puts 'Item was posted to Slack...'
 	end
   end
 
   class Reminder
 	def add_reminder
-      notifier = Slack::Notifier.new `cat ~/.slackdo/webhook`.strip
+	  file = File.read("#{ENV['HOME']}/.slackdo/config.json")
+      hash = JSON.parse(file)
+      webhook = hash['slack_webhook']
+      notifier = Slack::Notifier.new webhook
       cli = HighLine.new
       message = cli.ask 'Type your reminder:'
       notifier.post text: "• _#{message}_"
