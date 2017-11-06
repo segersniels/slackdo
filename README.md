@@ -1,5 +1,7 @@
 # Slackdo
-![example](img/task-example.png)
+![example](img/cli-example.png)
+![example](img/slack-task.png)
+![example](img/trello-card.png)
 
 A lot of people use the slack conversation with themselves as a todo list. SlackDO is a simple CLI tool that allows you to send TODO items and Reminders to yourself on Slack through an incoming webhook.
 
