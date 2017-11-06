@@ -22,6 +22,14 @@ module Slackdo
 		end
 	  end
     end
+	def disable_trello
+      file = File.read("#{ENV['HOME']}/.slackdo/config.json")
+      hash = JSON.parse(file)
+	  hash["allow_trello_pushing"] = "false"
+	  File.open("#{ENV['HOME']}/.slackdo/config.json",'w') do |f|
+        f.write(hash.to_json)
+      end
+	end
 	def configure_trello_api
 	  cli = HighLine.new
 	  file = File.read("#{ENV['HOME']}/.slackdo/config.json")
