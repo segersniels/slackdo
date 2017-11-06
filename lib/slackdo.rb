@@ -29,6 +29,7 @@ module Slackdo
 	  File.open("#{ENV['HOME']}/.slackdo/config.json",'w') do |f|
         f.write(hash.to_json)
       end
+	  puts 'Trello has been disabled...'
 	end
 	def configure_trello_api
 	  cli = HighLine.new
