@@ -17,6 +17,7 @@ case ARGV[0]
 	  if hash['allow_trello_pushing'] == 'true'
 		card_name = slack.get_message
 		card_desc = slack.get_notes
+		trello = Slackdo::Card.new
 	    trello.add_card(card_name, card_desc)
 	  end
 	when 'reminder'
