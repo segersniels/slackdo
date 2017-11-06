@@ -55,6 +55,12 @@ slackdo task
 ![example](img/slack-task.png)
 ![example](img/trello-card.png)
 
+To disable the Trello integration again use:
+
+```
+slackdo disable trello
+```
+
 ### Configuration
 The config file is located at `~/.slackdo/config.json` if you like to change things manually.
 

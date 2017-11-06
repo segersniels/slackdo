@@ -9,8 +9,10 @@ case ARGV[0]
 	when 'configure'
 	  config.configure_slack_webhook if ARGV[1] == 'slack'
 	  config.configure_trello_api if ARGV[1] == 'trello' && ARGV[2].nil?
-	  config.disable_trello if ARGV[1] == 'trello' && ARGV[2] == 'disable'
-	  config.enable_trello if ARGV[1] == 'trello' && ARGV[2] == 'enable'
+	when 'disable'
+	  config.disable_trello if ARGV[1] == 'trello'
+	when 'enable'
+      config.enable_trello if ARGV[1] == 'trello'
 	when 'task'
 	  slack = Slackdo::Task.new
       slack.add_task
