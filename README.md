@@ -16,7 +16,7 @@ gem install slackdo
 In order to use slackdo you still have to add the rubygem's bin location to your $PATH.
 
 ```bash
-export PATH=$PATH:$(gem which slackdo | cut -d'/' -f-9 )/bin
+export PATH=$PATH:$(gem which slackdo | rev | cut -d'/' -f3- | rev)/bin
 ```
 
 ## Usage
