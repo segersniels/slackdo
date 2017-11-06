@@ -12,7 +12,7 @@ case ARGV[0]
 	when 'task'
 	  slack = Slackdo::Task.new
       slack.add_task
-	  file = File.read('~/.slackdo/config.json')
+	  file = File.read("#{ENV['HOME']}/.slackdo/config.json")
       hash = JSON.parse(file)
 	  if hash['allow_trello_pushing'] == 'true'
 		card_name = slack.get_message
