@@ -71,7 +71,6 @@ Now that this has been configured SlackDO will send your items to Trello as well
 slackdo task
 ```
 
-![example](img/cli-example.png)
 ![example](img/slack-task.png)
 ![example](img/trello-card.png)
 
