@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    slackdo (0.3.0)
+    slackdo (0.3.1)
       highline
       json
       ruby-trello
