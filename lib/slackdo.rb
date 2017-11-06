@@ -11,6 +11,7 @@ module Slackdo
 	  system 'touch ~/.slackdo/config.json &> /dev/null'
 	  hash = {
 			"slack_webhook" => "",
+			"allow_trello_pushing" => "false",
 			"trello_public_key" => "",
 			"trello_member_token" => ""
 	  }
@@ -26,6 +27,7 @@ module Slackdo
 	  member_token = cli.ask 'What is your Trello member token?'.strip
 	  hash["trello_public_key"] = public_key
 	  hash["trello_member_token"] = member_token
+	  hash["allow_trello_pushing"] = "true"
 	  File.open("~/.slackdo/config.json","w") do |f|
         f.write(hash.to_json)
       end

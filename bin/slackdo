@@ -12,9 +12,13 @@ case ARGV[0]
 	when 'task'
 	  slack = Slackdo::Task.new
       slack.add_task
-	  card_name = slack.get_message
-	  card_desc = slack.get_notes
-	  trello.add_card(card_name, card_desc)
+	  file = File.read('~/.slackdo/config.json')
+      hash = JSON.parse(file)
+	  if hash['allow_trello_pushing'] == 'true'
+		card_name = slack.get_message
+		card_desc = slack.get_notes
+	    trello.add_card(card_name, card_desc)
+	  end
 	when 'reminder'
 	  slack = Slackdo::Reminder.new
 	  slack.add_reminder
