@@ -15,13 +15,25 @@ module Slackdo
 			"allow_trello_pushing" => "false",
 			"trello_public_key" => "",
 			"trello_member_token" => "",
-			"trello_list_id" => ""
+			"trello_list_id" => "",
+			"trello_label_list_ids" => []
 		}
 		File.open("#{ENV['HOME']}/.slackdo/config.json",'w') do |f|
 		  f.write(hash.to_json)
 		end
 	  end
     end
+	def add_label
+	  cli = HighLine.new
+	  file = File.read("#{ENV['HOME']}/.slackdo/config.json")
+	  hash = JSON.parse(file)
+	  id = cli.ask 'What is the ID of the label you wish to add?'.strip
+	  hash['trello_label_list_ids'] << id
+	  File.open("#{ENV['HOME']}/.slackdo/config.json",'w') do |f|
+        f.write(hash.to_json)
+      end
+	  puts "Label with ID '#{id}' was added..."
+	end
 	def enable_trello
       file = File.read("#{ENV['HOME']}/.slackdo/config.json")
       hash = JSON.parse(file)
@@ -78,15 +90,24 @@ module Slackdo
         config.member_token = hash['trello_member_token']
       end
 	end
-	def add_card(card_name, card_desc)
+	def add_card(card_category, card_name, card_desc)
 	  file = File.read("#{ENV['HOME']}/.slackdo/config.json")
       hash = JSON.parse(file)
 	  configure_trello
+	  card_name_full = ''
+	  card_name_full << "[#{card_category}]"
+	  card_name_full << " #{card_name}"
+	  label_id = ''
+	  hash['trello_label_list_ids'].each do |id|
+		label = Trello::Label.find(id)
+		label_id = id if label.name == card_category
+	  end
 	  card = Trello::Card.create(
-        name: card_name,
+        name: card_name_full,
         desc: card_desc,
-		list_id: hash['trello_list_id'],
+	  	list_id: hash['trello_list_id'],
         pos: 'top',
+	  	card_labels: label_id
       )
 	  card.save
 	  puts 'Card was created on Trello...'
@@ -96,14 +117,21 @@ module Slackdo
   class Task
 	$note_content = ''
 	$message = ''
-	def set_message(text)
-		$message = text
+	$category = ''
+	def set_category(cat)
+	  $category = cat
 	end
-	def set_notes(notes)
-		$note_content = notes
+	def get_category
+	  return $category
+	end
+	def set_message(text)
+	  $message = text
 	end
 	def get_message
-	  return $message
+      return $message
+    end
+	def set_notes(notes)
+	  $note_content = notes
 	end
 	def get_notes
 	  return $note_content
@@ -114,7 +142,7 @@ module Slackdo
 	  webhook = hash['slack_webhook']
       notifier = Slack::Notifier.new webhook
       cli = HighLine.new
-	  category = cli.ask 'What is the category of this new task? eg. DEV or GENERAL'
+	  cli_category = cli.ask 'What is the category of this new task? eg. DEV or GENERAL'
       cli_message = cli.ask 'Type your new task:'
       want_note = cli.ask 'Do you want to add a note to this new task? y/n'
       cli_note = ''
@@ -129,9 +157,10 @@ module Slackdo
           color: "gray",
           mrkdwn_in: ["text"]
       }
-	  set_message("[#{category}] #{cli_message}")
+	  set_message(cli_message)
+	  set_category(cli_category)
 	  set_notes(cli_note)
-      notifier.post text: "• [#{category}] #{cli_message}", attachments: [note]
+      notifier.post text: "• [#{cli_category}] #{cli_message}", attachments: [note]
 	  puts 'Item was posted to Slack...'
 	end
   end

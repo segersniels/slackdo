@@ -53,14 +53,23 @@ Now that this has been configured SlackDO will send your items to both Slack and
 slackdo task
 ```
 
-![example](img/slack-task.png)
 ![example](img/trello-card.png)
+
+You can add your label ids to the configuration to enable SlackDO to automatically assign labels to your cards. You can do this by doing the following:
+
+```
+slackdo label add
+```
+
+Just make sure you name your labels on Trello the same as the categories you use for your SlackDO tasks, otherwise it won't find these labels. So for example if you create a task with category set to `GENERAL` it will search for a label with a name set to `GENERAL` as well.
 
 To disable the Trello integration again use:
 
 ```
 slackdo disable trello
 ```
+
+
 
 ### Configuration
 The config file is located at `~/.slackdo/config.json` if you like to change things manually.

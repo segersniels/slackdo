@@ -9,6 +9,8 @@ case ARGV[0]
 	when 'configure'
 	  config.configure_slack_webhook if ARGV[1] == 'slack'
 	  config.configure_trello_api if ARGV[1] == 'trello' && ARGV[2].nil?
+	when 'label'
+	  config.add_label if ARGV[1] == 'add'
 	when 'disable'
 	  config.disable_trello if ARGV[1] == 'trello'
 	when 'enable'
@@ -21,8 +23,9 @@ case ARGV[0]
 	  if hash['allow_trello_pushing'] == 'true'
 		card_name = slack.get_message
 		card_desc = slack.get_notes
+		card_category = slack.get_category
 		trello = Slackdo::Card.new
-	    trello.add_card(card_name, card_desc)
+	    trello.add_card(card_category, card_name, card_desc)
 	  end
 	when 'reminder'
 	  slack = Slackdo::Reminder.new
