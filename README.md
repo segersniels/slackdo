@@ -1,4 +1,4 @@
-# Slackdo [![Gem Version](https://badge.fury.io/rb/slackdo.svg)](https://badge.fury.io/rb/slackdo)
+# SlackDO [![Gem Version](https://badge.fury.io/rb/slackdo.svg)](https://badge.fury.io/rb/slackdo)
 
 ![example](img/task-example.png)
 
@@ -61,7 +61,8 @@ You can add your label ids to the configuration to enable SlackDO to automatical
 slackdo label add
 ```
 
-Just make sure you name your labels on Trello the same as the categories you use for your SlackDO tasks, otherwise it won't find these labels. So for example if you create a task with category set to `GENERAL` it will search for a label with a name set to `GENERAL` as well.
+SlackDO will look for labels that have the same name as the category you have selected for your new task.
+So for example if you create a task with the category set to `GENERAL` SlackDO will look for a label with name `GENERAL`.
 
 To disable the Trello integration again use:
 
