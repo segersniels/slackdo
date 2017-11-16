@@ -70,7 +70,10 @@ To disable the Trello integration again use:
 slackdo disable trello
 ```
 
-
+#### Chrome extensions
+When you decide on using labels to add flair to your Trello cards I suggest taking a look at the following Chrome extensions:  
+- [Card Color Titles for Trello](https://chrome.google.com/webstore/detail/card-color-titles-for-tre/hpmobkglehhleflhaefmfajhbdnjmgim?hl=en)
+- [Card Colors for Trello](https://chrome.google.com/webstore/detail/card-colors-for-trello/nodlpencjjlohojddhflnahnfpfanbjm?hl=en)
 
 ### Configuration
 The config file is located at `~/.slackdo/config.json` if you like to change things manually.
