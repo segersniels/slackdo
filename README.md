@@ -28,6 +28,18 @@ First thing you should do is configure your incoming webhook by doing the follow
 slackdo configure slack
 ```
 
+Next up is configuring your categories. To add a category use:
+
+```
+slackdo category add
+```
+
+To delete one use:
+
+```
+slackdo category remove
+```
+
 After that you're all set to go.
 Add a new TODO item by using
 
