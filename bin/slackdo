@@ -9,6 +9,9 @@ case ARGV[0]
 	when 'configure'
 	  config.configure_slack_webhook if ARGV[1] == 'slack'
 	  config.configure_trello_api if ARGV[1] == 'trello' && ARGV[2].nil?
+	when 'category'
+	  config.add_category if ARGV[1] == 'add'
+	  config.remove_category if ARGV[1] == 'remove'
 	when 'label'
 	  config.add_label if ARGV[1] == 'add'
 	when 'disable'

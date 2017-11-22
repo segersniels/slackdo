@@ -1,8 +1,10 @@
 require 'slackdo/version'
-require 'highline'
 require 'slack-notifier'
 require 'trello'
 require 'json'
+require 'tty-prompt'
+
+$prompt = TTY::Prompt.new
 
 module Slackdo
   class Config
@@ -16,18 +18,42 @@ module Slackdo
 			"trello_public_key" => "",
 			"trello_member_token" => "",
 			"trello_list_id" => "",
-			"trello_label_list_ids" => []
+			"trello_label_list_ids" => [],
+			"categories" => [GENERAL]
 		}
 		File.open("#{ENV['HOME']}/.slackdo/config.json",'w') do |f|
 		  f.write(hash.to_json)
 		end
 	  end
     end
+	def add_category
+	  file = File.read("#{ENV['HOME']}/.slackdo/config.json")
+      hash = JSON.parse(file)
+      cat = $prompt.ask('What is the category you wish to add?')
+      unless hash['categories'].include?(cat.upcase)
+	    hash['categories'].push(cat.upcase)
+        File.open("#{ENV['HOME']}/.slackdo/config.json",'w') do |f|
+          f.write(hash.to_json)
+        end
+        puts "Category '#{cat.upcase}' was added..."
+	  else
+		puts "Category '#{cat.upcase}' already exists..."
+	  end
+	end
+	def remove_category
+	  file = File.read("#{ENV['HOME']}/.slackdo/config.json")
+      hash = JSON.parse(file)
+      cat = $prompt.select('What is the category you wish to remove?', hash['categories'])
+      hash['categories'].delete(cat)
+      File.open("#{ENV['HOME']}/.slackdo/config.json",'w') do |f|
+        f.write(hash.to_json)
+      end
+      puts "Category '#{cat}' was removed..."
+	end
 	def add_label
-	  cli = HighLine.new
 	  file = File.read("#{ENV['HOME']}/.slackdo/config.json")
 	  hash = JSON.parse(file)
-	  id = cli.ask 'What is the ID of the label you wish to add?'.strip
+	  id = $prompt.ask('What is the ID of the label you wish to add?')
 	  hash['trello_label_list_ids'] << id
 	  File.open("#{ENV['HOME']}/.slackdo/config.json",'w') do |f|
         f.write(hash.to_json)
@@ -53,12 +79,11 @@ module Slackdo
 	  puts 'Trello has been disabled...'
 	end
 	def configure_trello_api
-	  cli = HighLine.new
 	  file = File.read("#{ENV['HOME']}/.slackdo/config.json")
       hash = JSON.parse(file)
-	  public_key = cli.ask 'What is your Trello public key?'.strip
-	  member_token = cli.ask 'What is your Trello member token?'.strip
-	  list_id = cli.ask 'What is your board list ID where the cards should be created?'.strip
+	  public_key = $prompt.ask('What is your Trello public key?')
+	  member_token = $prompt.ask('What is your Trello member token?')
+	  list_id = $prompt.ask('What is your board list ID where the cards should be created?')
 	  hash["trello_public_key"] = public_key
 	  hash["trello_member_token"] = member_token
 	  hash["allow_trello_pushing"] = "true"
@@ -69,10 +94,9 @@ module Slackdo
 	  puts 'Trello API was configured...'
 	end
 	def configure_slack_webhook
-      cli = HighLine.new
 	  file = File.read("#{ENV['HOME']}/.slackdo/config.json")
       hash = JSON.parse(file)
-	  webhook = cli.ask 'What is your Slack webhook?'.strip
+	  webhook = $prompt.ask('What is your Slack webhook?')
       hash["slack_webhook"] = webhook
 	  File.open("#{ENV['HOME']}/.slackdo/config.json",'w') do |f|
         f.write(hash.to_json)
@@ -141,15 +165,14 @@ module Slackdo
       hash = JSON.parse(file)
 	  webhook = hash['slack_webhook']
       notifier = Slack::Notifier.new webhook
-      cli = HighLine.new
-	  cli_category = cli.ask 'What is the category of this new task? eg. DEV or GENERAL'
-      cli_message = cli.ask 'Type your new task:'
-      want_note = cli.ask 'Do you want to add a note to this new task? y/n'
+	  cli_category = $prompt.select('What is the category of this new task?', hash['categories'])
+      cli_message = $prompt.ask('Type your new task:')
+      want_note = $prompt.select('Do you want to add a note to this new task?', %w(Yes No))
       cli_note = ''
-      while want_note == 'y'
-        note_text = cli.ask 'Type your note:'
+      while want_note == 'Yes'
+        note_text = $prompt.ask('Type your note:')
         cli_note << "\n`- #{note_text}`"
-        want_note = cli.ask 'Do you want to add another note to the task? y/n'
+        want_note = $prompt.select('Do you want to add another note to the task?', %w(Yes No))
       end
       note = {
           fallback: "This should've been a new note but looks like something went wrong...",
@@ -171,8 +194,7 @@ module Slackdo
       hash = JSON.parse(file)
       webhook = hash['slack_webhook']
       notifier = Slack::Notifier.new webhook
-      cli = HighLine.new
-      message = cli.ask 'Type your reminder:'
+      message = $prompt.ask('Type your reminder:')
       notifier.post text: "• _#{message}_"
 	  puts 'Reminder was posted to Slack...'
 	end
