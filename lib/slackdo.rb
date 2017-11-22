@@ -138,7 +138,7 @@ module Slackdo
 	def add_card(card_category, card_name, card_desc)
 	  file = File.read("#{ENV['HOME']}/.slackdo/config.json")
       hash = JSON.parse(file)
-	  configure_trello
+	  Card.configure_trello
 	  card_name_full = ''
 	  card_name_full << "[#{card_category}]"
 	  card_name_full << " #{card_name}"
