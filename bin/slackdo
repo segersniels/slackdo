@@ -14,6 +14,7 @@ case ARGV[0]
 	  config.remove_category if ARGV[1] == 'remove'
 	when 'label'
 	  config.add_label if ARGV[1] == 'add'
+	  config.remove_label if ARGV[1] == 'remove'
 	when 'disable'
 	  config.disable_trello if ARGV[1] == 'trello'
 	when 'enable'

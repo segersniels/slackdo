@@ -28,15 +28,10 @@ First thing you should do is configure your incoming webhook by doing the follow
 slackdo configure slack
 ```
 
-Next up is configuring your categories. To add a category use:
+Next up is configuring your categories. To add or remove a category use:
 
 ```
 slackdo category add
-```
-
-To delete one use:
-
-```
 slackdo category remove
 ```
 
@@ -67,10 +62,11 @@ slackdo task
 
 ![example](img/trello-card.png)
 
-You can add your label ids to the configuration to enable SlackDO to automatically assign labels to your cards. You can do this by doing the following:
+You can add your label ids to the configuration to enable SlackDO to automatically assign labels to your cards. You can add or remove a label by doing the following:
 
 ```
 slackdo label add
+slackdo label remove
 ```
 
 SlackDO will look for labels that have the same name as the category you have selected for your new task.

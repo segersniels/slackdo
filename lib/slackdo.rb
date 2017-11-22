@@ -18,7 +18,7 @@ module Slackdo
 			"trello_public_key" => "",
 			"trello_member_token" => "",
 			"trello_list_id" => "",
-			"trello_label_list_ids" => [],
+			"trello_label_ids" => [],
 			"categories" => [GENERAL]
 		}
 		File.open("#{ENV['HOME']}/.slackdo/config.json",'w') do |f|
@@ -54,11 +54,32 @@ module Slackdo
 	  file = File.read("#{ENV['HOME']}/.slackdo/config.json")
 	  hash = JSON.parse(file)
 	  id = $prompt.ask('What is the ID of the label you wish to add?')
-	  hash['trello_label_list_ids'] << id
+	  hash['trello_label_ids'].push(id)
 	  File.open("#{ENV['HOME']}/.slackdo/config.json",'w') do |f|
         f.write(hash.to_json)
       end
 	  puts "Label with ID '#{id}' was added..."
+	end
+	def remove_label
+	  Card.configure_trello
+	  file = File.read("#{ENV['HOME']}/.slackdo/config.json")
+      hash = JSON.parse(file)
+	  label_names = []
+	  hash['trello_label_ids'].each do |i|
+	    label_name = Trello::Label.find(i).name
+		label_names.push(label_name)
+	  end
+	  label = $prompt.select('What is the label you wish to remove?', label_names)
+	  id = ""
+	  hash['trello_label_ids'].each do |i|
+        label_name = Trello::Label.find(i).name
+        id = i if label_name == label
+      end
+      hash['trello_label_ids'].delete(id)
+      File.open("#{ENV['HOME']}/.slackdo/config.json",'w') do |f|
+        f.write(hash.to_json)
+      end
+      puts "Label '#{label}' was removed..."
 	end
 	def enable_trello
       file = File.read("#{ENV['HOME']}/.slackdo/config.json")
@@ -81,9 +102,9 @@ module Slackdo
 	def configure_trello_api
 	  file = File.read("#{ENV['HOME']}/.slackdo/config.json")
       hash = JSON.parse(file)
-	  public_key = $prompt.ask('What is your Trello public key?')
-	  member_token = $prompt.ask('What is your Trello member token?')
-	  list_id = $prompt.ask('What is your board list ID where the cards should be created?')
+	  public_key = $prompt.ask('What is your Trello public key?', default: hash['trello_public_key'])
+	  member_token = $prompt.ask('What is your Trello member token?', default: hash['trello_member_token'])
+	  list_id = $prompt.ask('What is your Trello list ID where the cards should be created?', default: hash['trello_list_id'])
 	  hash["trello_public_key"] = public_key
 	  hash["trello_member_token"] = member_token
 	  hash["allow_trello_pushing"] = "true"
@@ -96,7 +117,7 @@ module Slackdo
 	def configure_slack_webhook
 	  file = File.read("#{ENV['HOME']}/.slackdo/config.json")
       hash = JSON.parse(file)
-	  webhook = $prompt.ask('What is your Slack webhook?')
+	  webhook = $prompt.ask('What is your Slack webhook?', default: hash['slack_webhook'])
       hash["slack_webhook"] = webhook
 	  File.open("#{ENV['HOME']}/.slackdo/config.json",'w') do |f|
         f.write(hash.to_json)
@@ -106,7 +127,7 @@ module Slackdo
   end
 
   class Card
-	def configure_trello
+	def self.configure_trello
 	  file = File.read("#{ENV['HOME']}/.slackdo/config.json")
       hash = JSON.parse(file)
 	  Trello.configure do |config|
@@ -122,7 +143,7 @@ module Slackdo
 	  card_name_full << "[#{card_category}]"
 	  card_name_full << " #{card_name}"
 	  label_id = ''
-	  hash['trello_label_list_ids'].each do |id|
+	  hash['trello_label_ids'].each do |id|
 		label = Trello::Label.find(id)
 		label_id = id if label.name == card_category
 	  end
