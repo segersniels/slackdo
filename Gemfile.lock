@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    slackdo (0.3.7)
+    slackdo (0.3.8)
       json
       ruby-trello
       slack-notifier
