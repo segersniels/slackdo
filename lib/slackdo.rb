@@ -9,7 +9,7 @@ $prompt = TTY::Prompt.new
 module Slackdo
   class Config
 	def configure_init
-      system "mkdir #{ENV['HOME']}/.slackdo &> /dev/null"
+      `mkdir #{ENV['HOME']}/.slackdo` unless File.exist?("#{ENV['HOME']}/.slackdo")
 	  unless File.exist?("#{ENV['HOME']}/.slackdo/config.json")
 		system "touch #{ENV['HOME']}/.slackdo/config.json"
 		hash = {
