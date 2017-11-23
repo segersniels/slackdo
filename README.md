@@ -1,36 +1,96 @@
-# Test
+# SlackDO [![Gem Version](https://badge.fury.io/rb/slackdo.svg)](https://badge.fury.io/rb/slackdo)
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/test`. To experiment with that code, run `bin/console` for an interactive prompt.
+![example](img/task-example.png)
 
-TODO: Delete this and the text above, and describe your gem
+SlackDO is a simple CLI tool that allows you to send TODO items and reminders to a channel on Slack or to yourself. It simplifies the process of maintaining your TODO list from the CLI without having to leave it.
+
+## Prerequisites
+- Ruby
+- [Slack Incoming Webhook](https://my.slack.com/services/new/incoming-webhook)
+  - Configure the webhook to your liking and either point the webhook to yourself or a separate todo channel
 
 ## Installation
-
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'test'
+```
+gem install slackdo
 ```
 
-And then execute:
+In order to use slackdo you still have to add the rubygem's bin location to your $PATH.
 
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install test
+```bash
+export PATH=$PATH:$(gem which slackdo | rev | cut -d'/' -f3- | rev)/bin
+```
 
 ## Usage
+### Slack
+First thing you should do is configure your incoming webhook by doing the following:
 
-TODO: Write usage instructions here
+```
+slackdo configure slack
+```
+
+Next up is configuring your categories. To add or remove a category use:
+
+```
+slackdo category add
+slackdo category remove
+```
+
+After that you're all set to go.
+Add a new TODO item by using
+
+```ruby
+slackdo task
+```
+or add a reminder with
+
+```ruby
+slackdo reminder
+```
+
+### Trello
+To start using the Trello integration of SlackDO, which enables you to push your TODO items to a list on Trello, use:
+
+```
+slackdo configure trello
+```
+
+Now that this has been configured SlackDO will send your items to both Slack and Trello everytime you use the command:
+
+```
+slackdo task
+```
+
+![example](img/trello-card.png)
+
+You can add your label ids to the configuration to enable SlackDO to automatically assign labels to your cards. You can add or remove a label by doing the following:
+
+```
+slackdo label add
+slackdo label remove
+```
+
+SlackDO will look for labels that have the same name as the category you have selected for your new task.
+So for example if you create a task with the category set to `GENERAL` SlackDO will look for a label with name `GENERAL`.
+
+To disable the Trello integration again use:
+
+```
+slackdo disable trello
+```
+
+#### Chrome extensions
+When you decide on using labels to add flair to your Trello cards I suggest taking a look at the following Chrome extensions:  
+- [Card Color Titles for Trello](https://chrome.google.com/webstore/detail/card-color-titles-for-tre/hpmobkglehhleflhaefmfajhbdnjmgim?hl=en)
+- [Card Colors for Trello](https://chrome.google.com/webstore/detail/card-colors-for-trello/nodlpencjjlohojddhflnahnfpfanbjm?hl=en)
+
+### Configuration
+The config file is located at `~/.slackdo/config.json` if you like to change things manually.
 
 ## Development
-
-After checking out the repo, run `bin/setup` to install dependencies. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
-
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+Slackdo is still under development and might still be buggy. Feel free to contribute to the project.
 
 ## Contributing
+Bug reports and pull requests are welcome on GitHub at https://github.com/segersniels/slackdo.
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/test.
-
+## License
+The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
