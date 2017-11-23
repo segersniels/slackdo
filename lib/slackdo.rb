@@ -19,7 +19,7 @@ module Slackdo
 			"trello_member_token" => "",
 			"trello_list_id" => "",
 			"trello_label_ids" => [],
-			"categories" => [GENERAL]
+			"categories" => ["GENERAL"]
 		}
 		File.open("#{ENV['HOME']}/.slackdo/config.json",'w') do |f|
 		  f.write(hash.to_json)
