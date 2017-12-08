@@ -6,15 +6,15 @@ config = Slackdo::Config.new
 config.configure_init
 
 banner = <<-EOS
-Usage: slackdo [options] <subcommands> 
+Usage: slackdo [options] 
 Where [options] are: 
-    - configure <subcommand> | slack, trello
-    - category <subcommand> | add, remove
-    - label <subcommand> | add, remove
-    - disable <subcommand> | trello
-    - enable <subcommand> | trello
-    - task
-    - reminder
+   - configure <subcommand> \t| slack, trello
+   - category <subcommand> \t| add, remove
+   - label <subcommand> \t| add, remove
+   - disable <subcommand> \t| trello
+   - enable <subcommand> \t| trello
+   - task
+   - reminder
 EOS
 
 case ARGV[0]
