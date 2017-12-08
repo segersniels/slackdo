@@ -5,7 +5,21 @@ require 'slackdo'
 config = Slackdo::Config.new
 config.configure_init
 
+banner = <<-EOS
+Usage: slackdo [options] <subcommands> 
+Where [options] are: 
+    - configure <subcommand> | slack, trello
+    - category <subcommand> | add, remove
+    - label <subcommand> | add, remove
+    - disable <subcommand> | trello
+    - enable <subcommand> | trello
+    - task
+    - reminder
+EOS
+
 case ARGV[0]
+	when 'help', '-h', '--help'
+	  puts banner
 	when 'configure'
 	  config.configure_slack_webhook if ARGV[1] == 'slack'
 	  config.configure_trello_api if ARGV[1] == 'trello' && ARGV[2].nil?
