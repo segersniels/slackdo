@@ -21,33 +21,9 @@ export PATH=$PATH:$(gem which slackdo | rev | cut -d'/' -f3- | rev)/bin
 ```
 
 ## Usage
-### Slack
-First thing you should do is configure your incoming webhook by doing the following:
+![](https://i.gyazo.com/bc96271b08552d8cf58a522fa025b594.gif)
 
-```
-slackdo configure slack
-```
-
-Next up is configuring your categories. To add or remove a category use:
-
-```
-slackdo category add
-slackdo category remove
-```
-
-After that you're all set to go.
-Add a new TODO item by using
-
-```ruby
-slackdo task
-```
-or add a reminder with
-
-```ruby
-slackdo reminder
-```
-
-### Trello
+## Trello
 To start using the Trello integration of SlackDO, which enables you to push your TODO items to a list on Trello, use:
 
 ```
