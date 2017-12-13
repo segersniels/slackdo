@@ -53,11 +53,7 @@ To start using the Trello integration of SlackDO, which enables you to push your
 slackdo configure trello
 ```
 
-Now that this has been configured SlackDO will send your items to both Slack and Trello everytime you use the command:
-
-```
-slackdo task
-```
+Now that this has been configured SlackDO will send your items to both Slack and Trello everytime you create a new task.
 
 You can add your label ids to the configuration to enable SlackDO to automatically assign labels to your cards. You can add or remove a label by doing the following:
 
