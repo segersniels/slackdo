@@ -59,8 +59,6 @@ Now that this has been configured SlackDO will send your items to both Slack and
 slackdo task
 ```
 
-![example](img/trello-card.png)
-
 You can add your label ids to the configuration to enable SlackDO to automatically assign labels to your cards. You can add or remove a label by doing the following:
 
 ```
