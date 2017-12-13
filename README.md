@@ -23,7 +23,30 @@ export PATH=$PATH:$(gem which slackdo | rev | cut -d'/' -f3- | rev)/bin
 ## Usage
 ![](https://i.gyazo.com/bc96271b08552d8cf58a522fa025b594.gif)
 
-## Trello
+For more information see `slackdo help`.
+
+### Configuring Slack
+You should start with configuring your slack [webhook](https://my.slack.com/services/new/incoming-webhook):
+
+```bash
+slackdo configure slack
+```
+
+### Adding a new category
+Categories are what you tag your message as. To create a new category use:
+
+```bash
+slackdo category add
+```
+
+### Writing a new item
+Simply use:
+
+```bash
+slackdo task
+```
+
+### Trello
 To start using the Trello integration of SlackDO, which enables you to push your TODO items to a list on Trello, use:
 
 ```
