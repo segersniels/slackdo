@@ -79,9 +79,6 @@ When you decide on using labels to add flair to your Trello cards I suggest taki
 ### Configuration
 The config file is located at `~/.slackdo/config.json` if you like to change things manually.
 
-## Development
-Slackdo is still under development and might still be buggy. Feel free to contribute to the project.
-
 ## Contributing
 Bug reports and pull requests are welcome on GitHub at https://github.com/segersniels/slackdo.
 
