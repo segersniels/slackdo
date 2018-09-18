@@ -1,5 +1,7 @@
 # SlackDO [![Gem Version](https://badge.fury.io/rb/slackdo.svg)](https://badge.fury.io/rb/slackdo)
 
+> SlackDO is no longer being maintained
+
 ![example](img/task-example.png)
 
 SlackDO is a simple CLI tool that allows you to send TODO items and reminders to a channel on Slack or to yourself. It simplifies the process of maintaining your TODO list from the CLI without having to leave it.
